@@ -69,6 +69,59 @@ identity survives a long session. It skips sub-agents, fails open, and `FOUNDRY_
 session. The first time a developer opens the repo, Claude Code asks them to trust the project hooks. The
 skill must stay under 9,000 characters (hook output is capped at 10,000); the gate enforces it.
 
+## Using the commands
+
+Open Claude Code in the repo and type the command. The session is already the dev-lead (see Session start).
+
+```
+/work sync-empty-payload-deletes-rows      # one card, you at both gates
+/work MOCK-1                               # a ticket or epic key: intake only, cards and a plan, nothing built
+/work                                      # no argument: shows where things stand and recommends the next item
+/shift sync-null-incoming-typeerror:full | fix-readme-typo:light
+/night-shift fix-readme-typo:light | sync-empty-payload-deletes-rows:full
+/night-shift fix-readme-typo:light push: allowed
+/night-shift                               # no cards named: proposes a scope of up to 5 and waits for your approval
+```
+
+A card is named by its slug (the file name without `.md`). `:light` or `:full` sets its tier (unsure means full).
+
+| Use | When |
+|---|---|
+| `/work` | New or risky work, your first runs, anything you want to watch. One item, you decide at both gates. |
+| `/shift` | Several items while you are at your desk. A fork is put to you live, that task waits, and the shift carries on with the others. |
+| `/night-shift` | A queue of well-specified cards you can leave running. Forks are parked, never asked. |
+
+**How the lead chooses what to take overnight.** Two ways. *You name the cards*, and those are the scope: the safest
+way to stay in control. *You name none*, and the lead runs `lead-plan-shift`, which proposes at most five cards and
+waits for your approval:
+1. Ready `gate-defect` cards go first.
+2. A card is eligible only if it is `ready`, named by the active epic plan (Jira or backlog mode), and its gates are
+   re-checked that turn.
+3. Overnight it drops anything with an unruled fork, a missing credential or environment, a FULL card with no real
+   fixture, a `parked` card, or a dependency on an unmerged card, and anything that cannot finish as a PR-ready branch.
+4. It ranks what is left by value (epic order, what it unblocks, severity) times suitability (LIGHT before FULL,
+   well specified, small), takes at most five and never pads the list.
+5. Each pick gets why-this, why-now, why-safe, its tier and an estimated diff cap, and each notable card left out gets
+   a one-line reason.
+
+Nothing is a scope until you approve it. Even then, each FULL task must pass Control's order check before the scope is
+locked, and at each task's start the lead parks anything gated, needing a human, or forking. The ranking is the
+model's judgment, so read the proposal before you approve it.
+
+**Before you leave a night shift:** each card is `ready` with a reproduction and acceptance criteria, a redacted real
+fixture exists for anything that touches data, the tier is set, `GATE_CMD` runs green, and `main` is protected. To stop a
+shift early, write `HALT: yes` in `vault/shift/scope.md`; the current task finishes and nothing new starts.
+
+**In the morning:** read `vault/shift/reports/<date>.md`. It lists what is committed on `shift/<date>` and waiting for
+your Gate 2, what a human must do (review and merge, live checks), each parked card with the fork that stopped it, and
+`questions asked mid-shift: 0`. Rule on the parked cards and set them back to `ready`, review and merge the branch
+yourself, then tell the lead in Claude Code that Gate 2 is approved so it can close the cards. A card only becomes
+`done` when you say so.
+
+**A live fork in `/shift`:** the lead posts a Gate 1 packet with the options and Control's independent lean, and keeps
+working on other cards. Answer with your ruling (for example "A, throw a named error"); it logs the ruling, sets the
+card back to `ready` and carries it through build, review and commit.
+
 ## Quick start
 
 1. Copy `.claude/`, `vault/`, `scripts/` and `CLAUDE.md` into the root of your repository.
