@@ -24,6 +24,10 @@ Why: a commit on the wrong branch is invisible until the human reviews.
    tree must be the gated tree; an uncommitted file can make a commit look greener than it is.
 6. Verify from disk: `git show --stat HEAD` lists the expected files.
 
+## Vault files
+Commit vault files only when the vault is shared (not git-ignored). When it is ignored, commit code only, and never
+commit an index or ruling that points at notes a fresh checkout will not have. The packet carries the evidence.
+
 ## Package
 `lead-package-pr` builds the PR body: summary, files, RED to GREEN paste, blast radius, what is not covered.
 Move the card to `vault/backlog/done/` in the same branch, not a later one.

@@ -39,8 +39,9 @@ five rules that break cards most:
   is invisible to the gate and every filter while looking fine on disk.
 - Narrative goes in `status_note`, never in `status`. Exactly one `status_note`; replace it, do not append.
 - Partial work is never `done`. It stays `ready` with a note naming the remaining half.
-- `done/` is a location: status `done` and the folder go together. A FULL card also needs its order file and a
-  `CONTROL:` check with `ORDER-OK`.
+- `done` means SHIPPED BY A HUMAN, and `done/` is its location: the two go together. Committed on a branch and
+  awaiting Gate 2 is `in-flight`, with the SHA in `status_note`. A FULL card also needs its order file and a
+  `CONTROL:` check with `ORDER-OK` to be `done`.
 - `status: parked` requires `parked_reason`. A parked card is not eligible for a shift until the operator rules.
 
 ## Rules

@@ -1,6 +1,6 @@
 {
   "mcpServers": {
-    "tracker": {
+    "jira": {
       "command": "<the command that starts your read-only tracker MCP server>",
       "args": [],
       "env": {

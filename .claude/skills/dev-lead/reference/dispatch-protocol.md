@@ -34,9 +34,10 @@ it runs at preload-only coverage.
 4. `REJECT-DESIGN`: a fresh design pass carrying the reason verbatim. Cap 2 rejects on one item, then park.
 5. BUILD starts only on APPROVE-DESIGN, with a fresh builder.
 
-## Parallelism
-Builders run in parallel only on disjoint file sets declared in their goals; never the same file. Never run the
-gate while a builder is alive. Finish or cap the current item before the next.
-
+## One at a time
+Dispatch one sub-agent at a time and wait for its return. Do not run builders in parallel, even on disjoint files.
+Why: a test with two cards on disjoint files showed the loop already runs them in turn, and parallel builders were
+never proven; a tree shared by two builders makes a red gate ambiguous. Never run the gate while a builder is alive.
+Finish or cap the current item before the next.
 ## After the return
 COMPLETE with artifacts: dispatch the reviewer. REJECT or any other status: `recovery-and-reject.md`.

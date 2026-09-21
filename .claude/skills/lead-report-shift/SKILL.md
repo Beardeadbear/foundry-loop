@@ -11,8 +11,9 @@ description: >
 Input: `vault/shift/scope.md`, `progress.md`, the shift branch's `git log`, the `vault/control/checks/` returns,
 and each item's packet. Count from the trail, never from memory.
 
-1. **Done.** For every finished item run `git log`/`git rev-parse` this turn and put the SHA (or PR) and the
-   tier on its line. No SHA means it is not "done"; it goes under partial.
+1. **Committed, awaiting Gate 2.** For every item the shift finished, run `git log`/`git rev-parse` this turn and
+   put the SHA (or PR) and the tier on its line. Nothing is "done" until a human ships it, and no SHA means it goes
+   under partial.
 2. **How.** One paragraph: rounds to green, rejects and their reasons, notable choices.
 3. **Needed from you.** Branches or PRs to review and merge; each parked item with the one fork or gate that
    stopped it; blockers hit. Batched, so the operator can rule on them together.

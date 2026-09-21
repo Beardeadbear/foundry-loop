@@ -12,10 +12,12 @@ Input: the order file (`vault/control/orders/<slug>.md`), its card, and the epic
 list and stop at the first failure.
 
 1. **Premises.** Re-run every cheap premise command yourself. Output differs from the order = REJECT.
-   A claim with no command and no UNVERIFIED label = REJECT.
+   A claim with no command and no UNVERIFIED label = REJECT. So is a command that cannot run from the repo root
+   (a probe script kept outside the repo).
 2. **Tier.** Compare the tier with the SURFACE (auth, permissions, data writes, parsing, concurrency,
    customer data = FULL). File-kind check: does the named file list match the tier? Unsure = FULL.
-3. **Fixture.** A real redacted input is named, or "creating it" is step 1. An invented fixture = REJECT.
+3. **Fixture.** A real redacted input is named, or "creating it" is step 1, with a provenance file that gives
+   the source and the capture date. An invented fixture, or no provenance = REJECT.
 4. **Acceptance criteria.** Itemised; each names its check; each states why it fails if the claim is false.
 5. **Failure-mode inventory** (required if it writes, copies, deletes or certifies operator/customer data).
    YOU list every such point from the code, one row each: what stops it succeeding while doing nothing, or
@@ -23,7 +25,10 @@ list and stop at the first failure.
    unanswered row means the surface is not ready to build.
 6. **Scope and caps.** Inside the card and the active epic plan. A diff budget split, a turn cap and a
    failure exit exist. "Three steps ahead" lines are present.
-7. **Vault.** A prior fix on this class (regression), dissolve (maybe not a bug), or ruling that applies.
+7. **Environment.** The order names the environment for verify-real, or declares `UNVERIFIABLE-HERE` with the
+   human live check. Blank = REJECT. The order's Open items checklist is complete, or each open item is a
+   ruling owed to the operator.
+8. **Vault.** A prior fix on this class (regression), dissolve (maybe not a bug), or ruling that applies.
 
 Return:
 ```

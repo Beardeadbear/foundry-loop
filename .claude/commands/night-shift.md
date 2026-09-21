@@ -27,13 +27,19 @@ the morning report.
 
 ## Flow
 1. Load `dev-lead`.
+1b. **Resuming.** If `vault/shift/scope.md`, `progress.md` and the shift branch already exist, a previous session was
+   interrupted. Re-derive the state from git (`git status`, the branch and its commits), the cards and the progress
+   file. Never trust leftover uncommitted work: re-run the RED and the gate, send it to a fresh reviewer, and commit
+   only on PASS. Log a `RECOVERY:` line. Do not re-lock, and do not restart a task already `verified`.
 2. Scope: named cards in `$ARGUMENTS` are the scope. Empty: run `lead-plan-shift` (overnight mode) and WAIT for
    the operator's approval. That is the one human decision in this mode.
 3. Order + lock: for each FULL task the lead writes the order and `control` (MODE: check-order) must return
-   `ORDER-OK`; otherwise the task is parked. Then write `vault/shift/scope.md` from `vault/_templates/scope.md`. Each task is a card slug with its `risk` tier. Drain any open
+   `ORDER-OK`; otherwise the task is parked. Then write `vault/shift/scope.md` from `vault/_templates/scope.md`, with `push: allowed` only if the
+   operator's arguments say `push: allowed`, otherwise `push: none`. Each task is a card slug with its `risk` tier. Drain any open
    `gate-defect` cards first. The lock is authoritative: no task outside it starts, however valuable.
 4. Per task, the full loop:
-   - INTAKE: the task must be an exact entry of `tasks`. Gated on something unmet (dependency, missing
+   - INTAKE: read `HALT` in `scope.md` FIRST. `yes` means write nothing for this task and go to the report. Then
+     the task must be an exact entry of `tasks`. Gated on something unmet (dependency, missing
      credential, human step)? Park it. Never guess past a gate.
    - SPEC / GOAL as normal. A forking or new-feature task runs DESIGN <> DESIGN-REVIEW first.
    - **Cap.** When a task goes in-flight, record its diff cap and base SHA in `progress.md`. A diff over the cap at
@@ -45,7 +51,8 @@ the morning report.
    - BUILD <> VERIFY as `/work`: loop until the gate is green AND the reviewer PASSES. A design rejected
      twice, or a builder rejected twice on the SAME defect: park it and move on.
    - PACKAGE: `lead-package-pr`.
-   - **Gate 2: STOP.** Commit to `shift/<date>`. Never merge, never push `main`, never tag.
+   - **Gate 2: STOP.** Commit to `shift/<date>`. Never merge, never push `main`, never tag. The card stays
+     `in-flight` with the SHA in `status_note`; it becomes `done` only when a human ships it.
    - **Between tasks:** `git status` shows no stray debris; scope file untouched; only then start the next.
 5. **Halt:** the operator writes `HALT: yes` in `scope.md`. Read it at each task's INTAKE only, never
    mid-build. The in-flight task finishes or parks; no later task starts. Killing the session is the only

@@ -2,7 +2,7 @@
 
 Plain summary (2-3 sentences a non-engineer follows).
 
-## Done (each with SHA or PR#, tier)
+## Committed, awaiting your Gate 2 (each with SHA or PR#, tier)
 - <slug> [full|light] : <what changed> : <sha>
 
 ## How

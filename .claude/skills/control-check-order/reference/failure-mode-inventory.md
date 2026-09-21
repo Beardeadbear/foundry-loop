@@ -25,6 +25,7 @@ The one who lists how it breaks is not the one shipping it: Control writes it, t
 | What if the source or target is the wrong environment? | acts on production from a test run |
 | What is reported on success? | a success line printed before the write is verified |
 | What is the way back? | no undo, no backup, no dry run |
+| What does a throw or crash do to the process or a shared service? | an unhandled exception takes the whole server down, not just the request |
 
 ## Row format
 `| <file:function> | <what stops success-with-no-effect or destruction> | SAFE (why) / BROKEN (how) |`

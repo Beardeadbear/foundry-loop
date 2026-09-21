@@ -2,6 +2,10 @@
 
 > Use when: a sub-agent returns anything but a clean COMPLETE or PASS.
 
+## Stalls
+A "waiting for..." return with no commit SHA is a stall, not a report. Check the tree and `git status` yourself; a
+backgrounded gate run just parks.
+
 ## Reviewer REJECT
 The reviewer returns the FIRST failed item, one reason. Then:
 1. Dispatch a NEW builder. Never resume the rejected one. Why: it holds the blind spot that caused the miss.

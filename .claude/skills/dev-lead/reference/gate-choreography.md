@@ -15,6 +15,9 @@ Packet, plain language first:
    evidence; send the goal back to `lead-write-goal`.
 5. The fork, if any: your recommendation marked, plus the `CONTROL:` line (fork-lean shown next to yours).
 6. FULL items: the `CONTROL:` line from check-order, verbatim. Without it the item is not Gate-1-ready.
+7. An unresolved `ORDER-REJECT`: say the item is BLOCKED on it and name the defect. Do not start BUILD until a
+   ruling names that reject. A general "approved" does not waive it; ask the operator to rule or fix it. Why:
+   the human line that overrides a check must say which check, or the override is invisible in the record.
 
 ## Gate 2: authorize delivery
 Packet is evidence, not a claim:

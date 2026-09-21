@@ -16,7 +16,8 @@ Long output goes to a file, never streamed:
 ## Work source
     mode: cards           # cards | jira | backlog
     project:              # tracker project key (mode jira)
-    active_epic:          # the campaign; a card is `ready` only if vault/plans/<epic>.md names it
+    active_epic:          # jira or backlog mode only: the campaign; a card is `ready` only if vault/plans/<epic>.md
+                          # names it. Leave blank in cards mode: any card marked ready is eligible.
     tracker_writes: human-only
 
 Cards in `vault/backlog/` are the loop's unit. Tracker status stays the tracker's; card `status` is loop state.

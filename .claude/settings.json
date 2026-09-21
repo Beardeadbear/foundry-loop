@@ -9,7 +9,13 @@
       "Bash(gh pr merge:*)",
       "Bash(git stash:*)",
       "Edit(scripts/check-vault.mjs)",
-      "Edit(.claude/settings.json)"
+      "Edit(.claude/settings.json)",
+      "mcp__jira__jira_post",
+      "mcp__jira__jira_put",
+      "mcp__jira__jira_patch",
+      "mcp__jira__jira_delete",
+      "mcp__jira__jira_add_comment",
+      "mcp__jira__jira_transition_issue"
     ]
   },
   "hooks": {

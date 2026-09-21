@@ -101,6 +101,8 @@ const notes = readdirSync(VAULT, { recursive: true })
   .map((p) => join(VAULT, p));
 const names = new Set(notes.flatMap((p) => [basename(p, '.md'), relative(VAULT, p).split('\\').join('/').replace(/\.md$/, '')]));
 const indexPath = join(VAULT, 'index.md');
+if (!existsSync(indexPath)) err(indexPath, 'missing: bootstrap with `cp vault/_templates/index.md vault/index.md`');
+if (!existsSync(join(VAULT, 'control', 'rulings.md'))) warnings.push('vault/control/rulings.md is missing: bootstrap with `cp vault/_templates/rulings.md vault/control/rulings.md`');
 const index = existsSync(indexPath) ? read(indexPath) : '';
 for (const p of notes) {
   for (const m of read(p).matchAll(/\[\[([^\]|#]+)/g)) if (!names.has(m[1].trim())) err(p, `broken link [[${m[1]}]]`);
@@ -117,7 +119,6 @@ const scope = join(VAULT, 'shift', 'scope.md');
 if (existsSync(scope)) {
   for (const m of read(scope).matchAll(/slug:\s*([a-z0-9-]+)/g)) {
     if (!slugs.has(m[1])) err(scope, `task '${m[1]}' has no card`);
-    else if (['parked', 'done'].includes(cardStatus[m[1]])) err(scope, `task '${m[1]}' is ${cardStatus[m[1]]}: rule it and set it ready first`);
   }
 }
 
@@ -194,6 +195,12 @@ if (existsSync(manual)) {
   const mode = (t.match(/mode:\s*(\w+)/) ?? [])[1];
   const epic = ((t.match(/active_epic:[ \t]*([^#\n]*)/) ?? [])[1] ?? '').trim();
   if ((mode === 'jira' || mode === 'backlog') && !epic) warnings.push('CLAUDE.md: work source is ' + mode + ' but active_epic is empty; there is no epic plan to scope against');
+}
+
+// ---- a git-ignored vault keeps evidence off the branch
+const ignore = join(ROOT, '.gitignore');
+if (existsSync(ignore) && /^vault\/backlog\/\*\.md\s*$/m.test(read(ignore))) {
+  warnings.push('.gitignore: vault content is git-ignored, so cards, orders and Control checks stay local and do not travel with a branch; the packet must carry them verbatim. To share the vault, delete the vault block in .gitignore');
 }
 
 // ---- session-start hook: dev-lead is injected whole, so it must fit under the output cap

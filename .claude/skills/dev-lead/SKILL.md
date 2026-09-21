@@ -27,7 +27,7 @@ Lead every status with plain language a non-engineer follows, then the detail.
 - **On every REJECT dispatch a NEW builder** carrying only the first failed item. The old one holds the blind spot.
 - **After every builder return, run `git status`.** A stash, a commit, or an edit outside the ownership table
   is a FINDING in the packet.
-- **A "waiting for..." return with no commit SHA is a stall,** not a report. Check the tree yourself.
+- **An unresolved ORDER-REJECT blocks BUILD** until the operator's ruling names it. A general "approved" does not waive it.
 - **Never auto-cross a human gate.** Attended: ask. Unattended: park the item and continue.
 - **Control's return goes to the operator verbatim** on a `CONTROL:` line. Never trim, paraphrase or drop it.
   A FULL item with no `CONTROL:` line is not ready for Gate 1 or Gate 2.
@@ -38,7 +38,7 @@ Lead every status with plain language a non-engineer follows, then the detail.
 2. `git status` clean? Commit or park stray work before starting.
 3. Name the redacted real fixture the RED will use for every surface the item touches.
 
-LIGHT: docs, prose, renames, test-only diffs, no behaviour change. FULL: everything else, and whenever unsure
+LIGHT (docs, prose, renames, test-only diffs) still runs builder, gate and reviewer diff-read. FULL: everything else, and whenever unsure
 (auth, permissions, data writes or migrations, parsing, concurrency, customer data). FULL adds check-order, a
 real-data RED, an adversarial reviewer, verify-real and coaching. Depth: the tier rubric below.
 
@@ -50,8 +50,8 @@ Unsure means FULL. If a LIGHT item's real diff touches a FULL surface: halt and 
 Fork-heavy or new-feature items insert `DESIGN <> DESIGN-REVIEW` before Gate 1 (fork test: `.claude/rules/engineering.md`). Uncertain: review.
 
 ## Router: load the skill before the phase
-Never work a phase from memory. When a trigger below fires, load its skill with the Skill tool first. Sub-agents
-do not inherit your skills, so every dispatch names theirs.
+Never work a phase from memory. When a trigger below fires, load its skill with the Skill tool first. You load only `lead-` and
+`shared-` skills. Sub-agents do not inherit yours, so every dispatch names theirs.
 
 **Skills you load yourself**
 
@@ -82,7 +82,7 @@ do not inherit your skills, so every dispatch names theirs.
 | LEARN | `control`, `MODE: coach` | `control-coach` | card, order, progress trail, rulings | `COACHING:` block |
 | Idle (`/work`, no item) | `control`, `MODE: coach` (next) | `control-coach` | backlog, epic plan | 3-line state + one next item |
 
-Fresh context every dispatch. Builders and reviewers run in parallel only on disjoint file sets. Control never
+Fresh context every dispatch. One item at a time, every dispatch in turn: no parallel builders. Control never
 receives the diff; the reviewer never receives the plan's strategy.
 
 ## Phase rules
@@ -110,8 +110,6 @@ REJECT. Run it once per commit, never while a builder is alive:
 - One recommendation, never a menu. Autonomous by default; surface only real blockers.
 - When an approach goes sideways (a claim you cannot re-derive, a probe that does not fail, a second reject on
   the same defect): stop and re-plan. Never grind.
-- Before dispatch, three lines in the goal: what this forces next, what breaks if the premise is wrong, which
-  live item it collides with.
 - Sonnet by default for every agent; Opus only where the goal names it with a reason.
 
 ## Packets

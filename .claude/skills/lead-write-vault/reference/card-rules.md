@@ -40,6 +40,11 @@ append. **Partial work is never `done`.** It stays `ready` with a note naming th
 `premise: dead` means the stated MECHANISM is gone, never that the symptom did not happen. Re-read the card for
 evidence the symptom was observed before archiving; if so, re-scope to the real cause.
 
+## `done` means shipped by a human
+A card is `done` only after the human has shipped it (Gate 2 "yes" and the merge). Work that is committed on a branch
+and waiting for Gate 2 stays `in-flight`, with the commit SHA in `status_note`. Marking it `done` early overstates
+the state and clears the gate of every card that waits on it.
+
 ## `done/` is a location with a biconditional rule
 A card in `done/` has status `done`, and a card with status `done` is in `done/`. Anything else is corruption.
 Close a card in the same pass that verifies its packet, with the commit SHA in `status_note`. A FULL card also

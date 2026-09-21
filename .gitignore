@@ -3,7 +3,26 @@
 .env.*
 !.env.example
 .mcp.json
+.jira*
 .claude/settings.local.json
+
+# vault: live content is local operating memory. Templates and the folder skeleton (.gitkeep) stay tracked.
+# Bootstrap after cloning: cp vault/_templates/index.md vault/index.md && cp vault/_templates/rulings.md vault/control/rulings.md
+# Teams that want to share their vault: delete this block.
+vault/index.md
+vault/control/rulings.md
+vault/backlog/*.md
+!vault/backlog/_*.md
+vault/backlog/done/*.md
+vault/plans/*.md
+vault/decisions/*.md
+vault/lessons/*.md
+vault/control/orders/*.md
+vault/control/checks/*.md
+vault/shift/*.md
+vault/shift/reports/*.md
+vault/staging/*
+!vault/staging/.gitkeep
 
 # noise
 node_modules/
