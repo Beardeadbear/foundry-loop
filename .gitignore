@@ -1,0 +1,11 @@
+# secrets and local config: never commit
+.env
+.env.*
+!.env.example
+.mcp.json
+.claude/settings.local.json
+
+# noise
+node_modules/
+.DS_Store
+*.log

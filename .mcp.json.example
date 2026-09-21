@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "tracker": {
+      "command": "<the command that starts your read-only tracker MCP server>",
+      "args": [],
+      "env": {
+        "TRACKER_BASE_URL": "${TRACKER_BASE_URL}",
+        "TRACKER_EMAIL": "${TRACKER_EMAIL}",
+        "TRACKER_API_TOKEN": "${TRACKER_API_TOKEN}"
+      }
+    }
+  }
+}
