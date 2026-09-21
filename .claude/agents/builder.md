@@ -8,6 +8,7 @@ maxTurns: 300
 skills:
   - builder-reproduce-red
   - builder-fix-code
+  - builder-receive-reject
 disallowedTools:
   - Agent
   - WebFetch

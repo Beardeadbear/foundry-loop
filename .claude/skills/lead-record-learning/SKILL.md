@@ -9,8 +9,8 @@ description: >
 
 1. Is it durable? A root cause pattern, a reusable path, a decision and its reason, a known error and its
    workaround. Not: status, what you did, raw output.
-2. Search the vault for the topic first. **Merge into the existing note** if there is one.
-3. Otherwise create `vault/lessons/<slug>.md` (or `decisions/`) with front matter: `title`, `tags`,
+2. Search the vault for the topic first (`shared-read-vault`). **Merge into the existing note** if there is one.
+3. Otherwise write it by `lead-write-vault` (folder, format, staging rule): create `vault/lessons/<slug>.md` (or `decisions/`) with front matter: `title`, `tags`,
    `summary`, `updated`, plus 2-3 links to related notes.
 4. Add it to the folder list in `vault/index.md`.
 5. Check: every link you wrote resolves; no orphan (the note is listed in the index).
@@ -18,3 +18,11 @@ description: >
 
 Gotchas: never write secrets or customer data. Distill; do not paste logs. If a note disagrees with the
 code, the code wins and the note is fixed.
+
+## Reference (use when)
+Read a file only when its row applies. Never load them all.
+
+| Use when | Read |
+|---|---|
+| An item closed green and its driving card must leave the live backlog | `reference/card-archive.md` |
+| Deciding whether a lesson is durable, and which folder it belongs in | `reference/what-earns-a-note.md` |

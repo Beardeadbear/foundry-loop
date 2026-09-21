@@ -18,3 +18,11 @@ description: >
 
 Gotchas: fixing the symptom in one caller when a shared function is the cause leaves every sibling caller
 broken. Grep the callers first. Never edit the gate or the failing test to reach green.
+
+## Reference (use when)
+Read a file only when its row applies. Never load them all.
+
+| Use when | Read |
+|---|---|
+| Deciding what NOT to touch while fixing, or when your diff is growing past the defect | `reference/minimal-blast-radius.md` |
+| You have a RED test and are about to edit; trace the failure to its cause first | `reference/root-cause-tracing.md` |

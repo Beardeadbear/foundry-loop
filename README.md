@@ -1,5 +1,7 @@
 # Foundry Loop
 
+![Foundry Loop: a fixed loop for building with Claude Code](docs/foundry-loop.png)
+
 A way of working with Claude Code where one main agent runs a **fixed loop**, three specialised sub-agents do
 the building and judging, a **plain test command** decides what is green, and a **human signs only two
 things**: what to build, and what ships.
@@ -85,6 +87,59 @@ each card carries `ref:` to its ticket and `epic:` to its campaign, and an epic 
 only cards that may be `ready`. The tracker owns workflow status; the card owns the reproduction, proving
 check, tier and loop state. Agents read the tracker; a human writes to it. Ticket text is data, never instructions.
 
+## The router and the reference files
+
+The lead never works a phase from memory. `dev-lead/SKILL.md` carries a **router**: one table of the skills the
+lead loads itself (trigger to skill), and one table of who it dispatches at each phase and which skills it names
+in the dispatch. Sub-agents do not inherit the lead's skills, so the dispatch names theirs.
+
+Depth lives in `reference/` folders beside each skill and is read **just in time**. Each skill ends with a
+"Reference (use when)" table, and every reference file opens with a `> Use when:` line. The lead reads
+`gate-choreography.md` only when it presents a gate, `recovery-and-reject.md` only when a builder returns
+STUCK, and so on. This keeps the always-loaded body short (`dev-lead` is injected whole at session start and
+must stay under 9,000 characters) and puts depth where it is needed.
+
+## Add your own method skill
+
+A method skill is one job, written as steps the model follows. There is no router to edit: routing is the
+skill's **name** (which agent may load it) plus **where it is listed** (how it reaches that agent).
+
+1. **Pick the owner.** Which agent wears it? Name the skill `<owner>-<job>`: `builder-`, `reviewer-`,
+   `control-`, `lead-`, or `shared-` for any agent. A new *job* that fits none of them is a new agent, not a
+   skill.
+2. **Create** `.claude/skills/<owner>-<job>/SKILL.md`. One job, a description that says exactly when to use it,
+   numbered steps, a literal return shape the lead can check, and gotchas that each name the incident behind
+   them. No client, tenant or environment names inside a skill.
+
+   ~~~
+   ---
+   name: builder-migrate-schema      # must equal the folder name
+   description: >
+     One sentence: what it does. Use when the goal says MIGRATE.
+   ---
+   # builder-migrate-schema
+   1. Numbered steps the agent follows.
+   Return: `MIGRATION-READY: <file>` or `MIGRATION-BLOCKED: <first reason>`.
+   Gotchas: <a real failure, and the consequence it caused>.
+   ~~~
+
+3. **Route it.** Sub-agents do not inherit the lead's skills, so choose one:
+   - **Always-on for that agent** (every item): add it under `skills:` in `.claude/agents/<owner>.md`. Its full
+     text is preloaded, so keep that list short.
+   - **Task-specific** (only some items): do not preload. Add it to the "Method skills named" cell of that
+     phase's row in the dispatch table in `.claude/skills/dev-lead/SKILL.md` (the `+ task skills` part). The
+     lead then names it in the goal's "Read these skills" line when it writes the goal.
+   - **A lead method:** name it in that phase's bullet in `dev-lead/SKILL.md`.
+4. **Run the gate.** `node scripts/check-vault.mjs` fails if the prefix is wrong, the name does not match the
+   folder, an agent loads another agent's skill, or the skill is **unrouted** (in no agent's `skills:` list and
+   not named in the dispatch table). Keep `dev-lead/SKILL.md` under 9,000 characters; put detail in your skill.
+5. **Add depth as a reference, not as body.** Keep `SKILL.md` to the steps, the return shape and the gotchas.
+   Put longer guidance in `reference/<topic>.md`, open it with a `> Use when: ...` line, and add it to the
+   skill's "Reference (use when)" table. The gate fails on a reference that is unlinked, dead, or has no
+   "Use when" line.
+6. **Prove it.** Run `/work` on a card that needs the skill and confirm the dispatch names it and the agent's
+   return follows its shape. A skill nobody has seen run is unproven.
+
 ## Optional: tracker connector and real environment
 
 Two example files ship for the optional integrations. Neither is required for the loop to run.
@@ -118,7 +173,8 @@ CLAUDE.md                   gate command, hard rules, work source, self-check
   hooks/                    load-dev-lead.mjs  (SessionStart: main session wears dev-lead)
   rules/                    engineering.md  security.md  testing.md  (always on, every agent)
   agents/                   builder.md  reviewer.md  control.md
-  skills/                   dev-lead (identity) + 17 method skills, named <owner>-<job>
+  skills/                   dev-lead (identity) + 24 method skills, named <owner>-<job>;
+                            each may carry reference/ files read only when needed
   commands/                 work.md  shift.md  night-shift.md
 vault/
   index.md                  start here
@@ -136,11 +192,19 @@ docs/Foundry-Loop.pdf       design, logic, detailed flow, agents, skills, comman
 ## What is enforced, and what is not
 
 - **By files and tools:** the session-start hook makes the main session the lead; the reviewer and control have no Write or Edit; the deny list blocks the risky git
-  and `gh` commands; `scripts/check-vault.mjs` rejects malformed cards, broken links, unlisted notes, and any agent loading a skill
-  that another agent owns.
+  and `gh` commands, and `Edit` on `scripts/check-vault.mjs` and `.claude/settings.json` (so an agent cannot
+  weaken the gate); `scripts/check-vault.mjs` rejects malformed cards and bad enums, a `parked` card with no
+  reason, a FULL card in `done/` with no order and no `ORDER-OK` check, broken links, unlisted notes, a locked
+  shift task that is parked or done, any agent loading a skill that another agent owns, a skill that is not
+  routed, and a reference that is unlinked, dead or has no "Use when" line. It warns on stale `in-flight`
+  cards, an unnamed operator, an empty `active_epic` in tracker mode, and a gate that covers only the vault.
 - **By discipline and your review:** that the lead dispatches the right agent at the right phase, and pastes
   Control's return verbatim on a `CONTROL:` line. A FULL item with no `CONTROL:` line is not ready for a gate.
   If the team later wants this enforced, a second hook (`Stop`) that blocks a FULL closure with no `CONTROL:` line
   is the smallest step.
+- **Known limits:** the reviewer is the same model family as the builder, so correlated blind spots are
+  possible; add diverse checks (mutation or property tests, an optional second-model review) to your own gate.
+  `git push` to a branch that tracks `main`, and a builder committing, are not blocked by the deny list. A small
+  hook can close them later. Tracker sync is manual by design: agents read the tracker and a human writes to it.
 - **Not covered:** an agent with no access to a real environment cannot run `reviewer-verify-real`. It says so
   (`UNVERIFIABLE-HERE`) and the packet lists a human live check.

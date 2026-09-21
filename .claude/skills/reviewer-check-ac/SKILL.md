@@ -21,3 +21,11 @@ the loop re-runs you after the one fix.
 
 Gotchas: "looks right" is not evidence; a PASS with no executed command is a REJECT of the review. A test
 that would pass either way is not proof; say so and REJECT. Reviewing your own earlier round is not fresh.
+
+## Reference (use when)
+Read a file only when its row applies. Never load them all.
+
+| Use when | Read |
+|---|---|
+| Checking the goal's Done-when block and you need the verifying act for a given criterion type | `reference/itemized-verification.md` |
+| Composing the final output, or unsure how to phrase PASS, REJECT, or a withdrawn finding | `reference/the-verdict-contract.md` |

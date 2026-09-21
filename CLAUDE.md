@@ -21,6 +21,11 @@ Long output goes to a file, never streamed:
 
 Cards in `vault/backlog/` are the loop's unit. Tracker status stays the tracker's; card `status` is loop state.
 
+## Fixtures
+    fixtures_dir: fixtures/redacted
+
+Redacted real inputs, each with a `.provenance.md` (see `.claude/rules/testing.md`).
+
 ## Operator
 Rules on forks, Gate 1 and Gate 2: <name>. Covers when away: <name>.
 

@@ -13,8 +13,8 @@ $ARGUMENTS
 
 ## Flow
 1. Load `dev-lead`.
-2. Scope = the cards named above (each a slug in `vault/backlog/`). Empty: propose the top 5 ready cards
-   ranked by value and suitability, each with why-this / why-now / risk tier; WAIT for approval.
+2. Scope = the cards named above (each a slug in `vault/backlog/`). Empty: run `lead-plan-shift` (attended
+   mode) and WAIT for approval.
 3. Lock: write `vault/shift/scope.md` (format in `/night-shift`). Nothing outside `tasks` starts. The
    operator may extend scope mid-shift by message; update the file and log the extension. You never extend
    it yourself.
@@ -25,7 +25,7 @@ $ARGUMENTS
    - no ruling once every other task is done: mark it `parked-awaiting-ruling`. Never self-approve a fork.
 5. Operator interrupts (a ruling, a halt, a priority flip inside scope) are processed at the next tool-call
    boundary: acknowledge, apply, log.
-6. End with the shift report (see `/night-shift`) in `vault/shift/reports/<date>-shift.md` and in chat.
+6. End with `lead-report-shift`: the report goes to `vault/shift/reports/<date>-shift.md` and into chat.
 
 Gate 2 is absolute: no push to main, no merge, no tag. Silent operator: do NOT convert to night behaviour;
 unresolved forks stay parked.

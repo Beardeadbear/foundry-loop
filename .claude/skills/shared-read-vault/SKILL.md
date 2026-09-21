@@ -19,3 +19,10 @@ description: >
 
 Gotcha: a finding is a lead. A vault note proves what was true when written; re-check it against the code
 before acting on it.
+
+## Reference (use when)
+Read a file only when its row applies. Never load them all.
+
+| Use when | Read |
+|---|---|
+| A finding or idea might already have been judged, and you must decide what the prior verdict means | `reference/search-and-dedup.md` |

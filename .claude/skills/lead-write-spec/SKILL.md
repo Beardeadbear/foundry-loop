@@ -20,3 +20,12 @@ Produce one page:
 
 Gotchas: an AC that would pass whether or not the feature works is not an AC. Write the "why it fails if
 the claim is false" clause for each.
+
+## Reference (use when)
+Read a file only when its row applies. Never load them all.
+
+| Use when | Read |
+|---|---|
+| You are writing or self-checking the AC in a spec before Gate 1 | `reference/acceptance-criteria-shape.md` |
+| An idea or card has words that could mean two builds, before you write the spec | `reference/ambiguity-scan.md` |
+| Reviewing your own spec before Gate 1, or a reviewer rejected a build for something the spec planted | `reference/spec-anti-patterns.md` |

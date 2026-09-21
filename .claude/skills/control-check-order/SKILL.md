@@ -33,3 +33,10 @@ RECOMMEND: <one next action for the lead/operator>
 ```
 Gotchas: an order that reads confidently is not a proven one. A premise you did not re-run is a premise you
 did not check.
+
+## Reference (use when)
+Read a file only when its row applies. Never load them all.
+
+| Use when | Read |
+|---|---|
+| The order's surface writes, copies, deletes, captures or certifies operator or customer data (a sync, an import, a migration, a publish, a template, a config), before anything is built | `reference/failure-mode-inventory.md` |

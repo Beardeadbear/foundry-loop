@@ -13,6 +13,12 @@ Always on, for every agent that writes or runs tests.
 Find the test the gate really runs. Never assume a path: an orphan test never gates. A test that would pass
 whether or not the claim is true is not evidence.
 
+## Real fixtures
+Redacted real inputs live in the directory named by `fixtures_dir` in `CLAUDE.md` (default
+`fixtures/redacted/`), each with a `<name>.provenance.md`: source, date captured, what was redacted, what was
+kept. None exists for the surface? Creating one is step 1 of the item (`builder-make-fixture`). The raw capture
+never enters the repo.
+
 ## The gate
 Deterministic, hermetic, no LLM in it. Checks that depend on a real environment run at verify-real, never on
 every iteration. Nobody edits the gate or a failing test to reach green.

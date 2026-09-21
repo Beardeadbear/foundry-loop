@@ -18,3 +18,11 @@ you cannot show it is dead, the change is a weakening.
 
 Verdict: cleared, or `REJECT: weakening: <what, file:line, what it protected>`. Green reached by editing
 the gate or the failing test is an automatic REJECT, regardless of AC.
+
+## Reference (use when)
+Read a file only when its row applies. Never load them all.
+
+| Use when | Read |
+|---|---|
+| The diff changes a shared function, artifact, schema, default or output shape, and you must prove the neighbors survived | `reference/adjacent-regression-scan.md` |
+| The diff removes or softens an existing mechanism (guard, validation, retry, check) and you must decide whether that is safe. This is also the canonical home for "a mechanism with incident provenance is not overbuild." | `reference/preservation-protocol.md` |

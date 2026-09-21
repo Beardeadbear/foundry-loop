@@ -20,15 +20,15 @@ With `push: allowed`, you may push the shift branch and open a DRAFT PR. Nothing
 
 ## No addressee overnight
 Any fork of ANY kind parks (scope ambiguity, design fork, premise collapse, cap breach, unclear AC).
-Parking = set the task `parked` in `vault/shift/progress.md` (template: `vault/_templates/progress.md`) + one line of why + **start the next item in
-the SAME turn.** A turn that ends in a question is a defect, not a courtesy. Parked forks are batched into
+Parking = set the card `status: parked` with a `parked_reason`, add the line to `vault/shift/progress.md`
+(template: `vault/_templates/progress.md`), and **start the next item in the SAME turn.** A parked card is not
+eligible for a shift until the operator rules and sets it back to `ready`. A turn that ends in a question is a defect, not a courtesy. Parked forks are batched into
 the morning report.
 
 ## Flow
 1. Load `dev-lead`.
-2. Scope: named cards in `$ARGUMENTS` are the scope. Empty: propose the top 5 ready cards (value x suitability
-   overnight: exclude anything gated or needing a human present), each with why-this / why-now /
-   why-safe-overnight; WAIT for the operator's approval. That is the one human decision in this mode.
+2. Scope: named cards in `$ARGUMENTS` are the scope. Empty: run `lead-plan-shift` (overnight mode) and WAIT for
+   the operator's approval. That is the one human decision in this mode.
 3. Order + lock: for each FULL task the lead writes the order and `control` (MODE: check-order) must return
    `ORDER-OK`; otherwise the task is parked. Then write `vault/shift/scope.md` from `vault/_templates/scope.md`. Each task is a card slug with its `risk` tier. Drain any open
    `gate-defect` cards first. The lock is authoritative: no task outside it starts, however valuable.
@@ -50,8 +50,8 @@ the morning report.
 5. **Halt:** the operator writes `HALT: yes` in `scope.md`. Read it at each task's INTAKE only, never
    mid-build. The in-flight task finishes or parks; no later task starts. Killing the session is the only
    immediate stop.
-6. **Morning report** (scope exhausted, caps exhausted, or halted): write `vault/shift/reports/<date>.md`
-   (template: `vault/_templates/report.md`) and paste it as the closing message. Every "done" carries a SHA; each item states
-   its tier. `questions asked mid-shift` must be **0**; non-zero is a shift defect and the report says so.
+6. **Morning report** (scope exhausted, caps exhausted, or halted): run `lead-report-shift`. It writes
+   `vault/shift/reports/<date>.md` and pastes it as the closing message. `questions asked mid-shift` must be
+   **0**; non-zero is a shift defect and the report says so.
 
 No argument and nothing to propose: say so and stop. Never invent scope.

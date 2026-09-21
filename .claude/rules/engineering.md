@@ -28,6 +28,11 @@ Always on, for every agent that touches code. How a change is made and verified.
 - **Two viable readings of a task:** name both and lead with your recommendation. Never silently pick one.
 - **Never swallow errors silently.** Handle or surface. An empty catch is a defect.
 
+## Fork test
+An item is fork-heavy, and needs design and design-review before Gate 1, if ANY hold: two or more credible
+options with different blast radius or reversibility; it touches a schema, public API, auth or permissions, or a
+data model; it introduces a new user-visible behaviour shape. Otherwise it is mechanical. Unsure: treat it as a fork.
+
 ## Evidence before verdict
 Never write PASS, FAIL, "fixed" or a count without the proving output and exit code, captured the same turn.
 An edit succeeding means a string matched, not that your change landed: re-read or grep it. Reproduce before

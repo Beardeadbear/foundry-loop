@@ -16,3 +16,12 @@ description: >
 
 Gotchas: a test that fails for an unrelated reason (import error, bad fixture) is not RED. A test that
 passes against the one consumer that already works proves nothing. Never invent rows; use the real shape.
+
+## Reference (use when)
+Read a file only when its row applies. Never load them all.
+
+| Use when | Read |
+|---|---|
+| You are about to decide where a new failing test lives, before writing it | `reference/find-the-wired-test.md` |
+| The failure you are trying to reproduce is not deterministic (fails sometimes, passes sometimes) | `reference/flaky-vs-real.md` |
+| Establishing the failing check, or about to trust a green result you have not seen fail | `reference/red-first-discipline.md` |

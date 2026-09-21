@@ -41,3 +41,12 @@ Also write the **reviewer's** skill line (usually the reviewer's defaults cover 
 - Pin the AC. The builder cannot edit them to pass.
 - A wrong "Reuse" is worse than none. Only name a helper you confirmed fits.
 - Always cap. A goal with only a success exit never terminates on a hard case.
+
+## Reference (use when)
+Read a file only when its row applies. Never load them all.
+
+| Use when | Read |
+|---|---|
+| You are writing the Done-when items of a goal, or the reviewer will verify them by re-execution | `reference/acceptance-criteria.md` |
+| You are writing the goal's last line, the failure exit, or a builder returned PARTIAL and you must re-slice | `reference/caps-and-failure-exits.md` |
+| You are filling the goal string in `lead-write-goal` and want the purpose and failure mode of each slot | `reference/the-goal-skeleton.md` |

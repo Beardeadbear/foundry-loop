@@ -9,6 +9,7 @@ skills:
   - reviewer-check-ac
   - reviewer-check-overbuild
   - reviewer-check-no-weakening
+  - reviewer-check-agnostic
   - reviewer-verify-real
 maxTurns: 150
 disallowedTools:

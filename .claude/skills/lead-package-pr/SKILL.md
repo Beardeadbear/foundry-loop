@@ -21,3 +21,10 @@ description: >
 ```
 
 Gotcha: every "done" claim carries a commit SHA. "Completed" with no SHA is a soft label.
+
+## Reference (use when)
+Read a file only when its row applies. Never load them all.
+
+| Use when | Read |
+|---|---|
+| Assembling the Gate 2 packet and you need to know what proof each section must carry | `reference/pr-contents.md` |
